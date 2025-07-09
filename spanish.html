@@ -256,7 +256,6 @@
 </div>
 
 
-            
 <!-- Sección 3: Plantilla de Notion -->
 <div id="notion-template" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
     <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
@@ -264,49 +263,27 @@
         <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
     </button>
 
-
-
-    <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="mb-6">
-            <video 
-                class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md"
-                controls
-                autoplay
-                muted
-                playsinline
-            >
-                <source src="https://youtu.be/Xet3KkFDt8o" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </div>
-
-
-   
-
-<div class="accordion-content hidden bg-white dark:bg-dark-900">
-    <div class="p-6 border-t border-gray-200 dark:border-gray-700">
-        <div class="mb-6">
-            <video 
-                class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md"
-                controls
-                autoplay
-                muted
-                playsinline
-            >
-                <source src="https://youtu.be/Xet3KkFDt8o" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </div>
-</div>
-
-    
     <div class="accordion-content hidden bg-white dark:bg-dark-900">
-        <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="p-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
+            
+            <!-- Video embebido -->
+            <div class="aspect-w-16 aspect-h-9 rounded-lg shadow-md overflow-hidden">
+                <iframe 
+                    class="w-full h-full rounded-lg"
+                    src="https://www.youtube.com/embed/Xet3KkFDt8o"
+                    title="Video de Notion"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowfullscreen
+                ></iframe>
+            </div>
+
+            <!-- Bloque de contenido y botones -->
             <div class="bg-white dark:bg-dark-800 p-8 rounded-xl border border-primary/20 dark:border-primary/30 shadow-lg text-center">
                 <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Obtén la Plantilla Todo-en-Uno de Productividad</h3>
-                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Cierra la brecha entre la percepción y la acción. Esta plantilla de Notion combina la Auditoría Digital y el Contrato de Productividad en una sola página fácil de usar. Cópiala a tu espacio de trabajo y comienza a rastrear tu progreso hoy mismo.</p>
+                <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                    Cierra la brecha entre la percepción y la acción. Esta plantilla de Notion combina la Auditoría Digital y el Contrato de Productividad en una sola página fácil de usar. Cópiala a tu espacio de trabajo y comienza a rastrear tu progreso hoy mismo.
+                </p>
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <button id="open-modal-btn" class="w-full sm:w-auto inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105">
                         <i data-lucide="copy"></i> Ver y Copiar Plantilla
@@ -316,10 +293,10 @@
                     </a>
                 </div>
             </div>
+
         </div>
     </div>
 </div>
-
 
 
             
