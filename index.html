@@ -258,7 +258,7 @@
 
                     
                     
-              <!-- Section 3: Notion Template -->
+<!-- Section 3: Notion Template -->
 <div id="notion-template" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
     <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
         <span class="text-xl text-gray-900 dark:text-white">3. Notion Template: Your Action Plan</span>
@@ -268,16 +268,11 @@
     <div class="accordion-content hidden bg-white dark:bg-dark-900">
         <div class="p-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
 
-            <!-- Embedded Video -->
-            <div class="aspect-w-16 aspect-h-9 rounded-lg shadow-md overflow-hidden">
-                <iframe 
-                    class="w-full h-full rounded-lg"
-                    src="https://www.youtube.com/embed/Xet3KkFDt8o"
-                    title="Notion Template Walkthrough"
-                    frameborder="0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowfullscreen
-                ></iframe>
+            <!-- Watch Video Button -->
+            <div class="text-center">
+                <button id="open-video-modal" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105">
+                    <i data-lucide="play-circle"></i> Watch Video
+                </button>
             </div>
 
             <!-- Content Box -->
@@ -295,11 +290,58 @@
                     </a>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
 
+<!-- Modal Overlay -->
+<div id="video-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-80 p-4">
+    <div class="relative w-full max-w-3xl aspect-video bg-black rounded-xl overflow-hidden shadow-lg">
+        <button id="close-video-modal" class="absolute top-2 right-2 text-white text-2xl z-10 hover:text-red-500">
+            &times;
+        </button>
+        <iframe
+            id="video-iframe"
+            class="w-full h-full"
+            src=""
+            title="Notion Template Video"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen
+        ></iframe>
+    </div>
+</div>
+
+<!-- Script -->
+<script>
+    const openBtn = document.getElementById('open-video-modal');
+    const closeBtn = document.getElementById('close-video-modal');
+    const modal = document.getElementById('video-modal');
+    const iframe = document.getElementById('video-iframe');
+
+    const videoURL = "https://www.youtube.com/embed/Xet3KkFDt8o?autoplay=1";
+
+    openBtn.addEventListener('click', () => {
+        iframe.src = videoURL;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    });
+
+    closeBtn.addEventListener('click', () => {
+        iframe.src = '';
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    });
+
+    // Optional: Close modal when clicking outside
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            iframe.src = '';
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+    });
+</script>
 
                     
 
