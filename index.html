@@ -17,6 +17,36 @@
   
     
     <style type="text/tailwindcss">
+
+ :root {
+            --primary: #25D366; /* WhatsApp green */
+            --primary-light: #dcf8c6;
+            --secondary: #2d3748;
+            --accent: #4fd1c5;
+            --text: #2d3748;
+            --text-light: #a0aec0;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-color: #e2e8f0;
+        }
+
+
+        
+        .dark-mode {
+            --text: #f7fafc; --text-light: #a0aec0; --bg: #1a202c;
+            --card-bg: #2d3748; --shadow: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+            --border-color: #4a5568;
+        }
+
+
+
+
+
+
+
+
+        
         @layer utilities {
           .text-glow {
             text-shadow: 0 0 8px theme('colors.primary.DEFAULT'), 0 0 20px theme('colors.primary.dark');
