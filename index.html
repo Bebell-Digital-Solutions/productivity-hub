@@ -14,6 +14,8 @@
 
     
     <script src="https://cdn.tailwindcss.com"></script>
+  
+    
     <style type="text/tailwindcss">
         @layer utilities {
           .text-glow {
@@ -80,7 +82,7 @@ padding-top: 30px;
     align-items: center;
     gap: 0.25rem;
     padding: 0.35rem 0.75rem;
-    border-radius: var(--radius);
+    border-radius: 7px;
     background: white;
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -95,6 +97,24 @@ padding-top: 30px;
     transform: translateY(-2px);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
+
+
+      /* Dark mode styles */
+        .dark .social-link {
+            background: rgba(30, 41, 59, 0.7); /* slate-800 with transparency */
+            color: #e2e8f0; /* slate-200 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark .social-link:hover {
+            background: rgba(30, 41, 59, 0.9);
+            color: #f8fafc; /* slate-100 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+
+        
+
 
 
 .bebell-footer p {
