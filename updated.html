@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Productivity Hub</title>
+
+    <!-- Favicon -->
+    <link rel="icon" href="https://bucket.mlcdn.com/a/3336/3336910/images/20b9de7f326dedf80fb4b5a26e56f7a4ffe824f4.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <style type="text/tailwindcss">
+        :root {
+            --primary: #25D366; /* WhatsApp green */
+            --primary-light: #dcf8c6;
+            --secondary: #2d3748;
+            --accent: #4fd1c5;
+            --text: #2d3748;
+            --text-light: #a0aec0;
+            --bg: #f7fafc;
+            --card-bg: #ffffff;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --border-color: #e2e8f0;
+        }
+
+        .dark-mode {
+            --text: #f7fafc; 
+            --text-light: #a0aec0; 
+            --bg: #1a202c;
+            --card-bg: #2d3748; 
+            --shadow: 0 4px 6px -1px rgba(0,0,0,0.4), 0 2px 4px -1px rgba(0,0,0,0.2);
+            --border-color: #4a5568;
+        }
+
+        @layer utilities {
+            .text-glow {
+                text-shadow: 0 0 8px theme('colors.primary.DEFAULT'), 0 0 20px theme('colors.primary.dark');
+            }
+        }
+
+        .custom-image-widget {
+            position: fixed !important;
+            top: 50px !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            right: 0px;
+            z-index: 999;
+        }
+
+        .custom-image {
+            width: 70px;
+            height: auto;
+            transition: transform 0.2s;
+        }
+
+        .custom-image-widget:hover .custom-image {
+            transform: scale(1.05);
+        }
+
+        .custom-image-widget:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            padding-top: 30px;
+            background: var(--bg);
+            text-align: center;
+            color: var(--text-light);
+            font-size: 12px;
+            width: 100%;
+            border-radius: 7px;
+            z-index: 10;
+            margin: 0 auto;
+            max-width: 820px;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin: 0;
+            flex-wrap: wrap;
+            padding: 0.25rem;
+        }
+
+        .social-link {
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.35rem 0.75rem;
+            border-radius: 7px;
+            background: white;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            transition: all 0.3s ease;
+            font-size: 0.85rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .social-link:hover {
+            color: var(--text);
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Dark mode styles */
+        .dark .social-link {
+            background: rgba(30, 41, 59, 0.7); /* slate-800 with transparency */
+            color: #e2e8f0; /* slate-200 */
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .dark .social-link:hover {
+            background: rgba(30, 41, 59, 0.9);
+            color: #f8fafc; /* slate-100 */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+        }
+
+        .bebell-footer p {
+            align-items: center;
+            text-align: center;
+            font-size: 12px;
+            line-height: 1.5;
+            margin: 0;
+            padding: 10px;
+        }
+
+        .bebell-link {
+            color: inherit;
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .bebell-link:hover {
+            color: #df1783;
+        }
+
+        .heart {
+            display: inline-block;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        /* Video Container Styles */
+        .video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        .video-thumbnail {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio */
+            overflow: hidden;
+            border-radius: 0.75rem;
+            cursor: pointer;
+        }
+
+        .video-thumbnail img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(223, 23, 131, 0.8);
+            color: white;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .video-play-button:hover {
+            background: rgba(223, 23, 131, 1);
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 1rem;
+        }
+
+        .video-modal-content {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            background: black;
+            border-radius: 0.75rem;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+
+        .video-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 1.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .video-modal-close:hover {
+            background: rgba(0, 0, 0, 0.8);
+        }
+    </style>
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            DEFAULT: '#df1783',
+                            light: '#f35ab1',
+                            dark: '#a60f61'
+                        },
+                        dark: {
+                            900: '#111827',
+                            800: '#1f2937',
+                            700: '#374151',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 text-gray-800 dark:bg-dark-900 dark:text-gray-300 font-sans antialiased transition-colors duration-300">
+
+    <!-- Language Toggle Widget -->
+    <div class="custom-image-widget">
+        <a href="https://bebell-digital-solutions.github.io/productivity-hub/spanish">
+            <img class="custom-image" 
+                 src="https://bucket.mlcdn.com/a/3336/3336910/images/138f14304ea21715dfae64ae5fe1d71b08c2d451.png" 
+                 alt="Spanish Translation"
+                 style="display: block;">
+        </a>
+    </div>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Navigation -->
+        <aside class="w-64 bg-gray-100 dark:bg-dark-800 p-6 fixed h-full hidden lg:flex flex-col border-r border-gray-200 dark:border-gray-700/50">
+            <div>
+                <div class="flex items-center gap-3 mb-10">
+                    <div class="bg-gradient-to-r from-pink-600 to-purple-600 w-10 h-10 rounded-lg flex items-center justify-center">
+                        <i data-lucide="zap" class="text-white"></i>
+                    </div>
+                    <h1 class="text-xl font-bold text-gray-900 dark:text-white">Productivity Hub</h1>
+                </div>
+                
+                <nav>
+                    <ul class="space-y-3">
+                        <li><a href="#audit" class="flex items-center gap-3 px-4 py-2 rounded-lg transition-all duration-200 text-primary dark:text-white bg-primary/10 dark:bg-primary/20"><i data-lucide="search" class="w-5 h-5"></i> Time Audit</a></li>
+                        <li><a href="#promise" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="handshake" class="w-5 h-5"></i> Your Commitment</a></li>
+                        <li><a href="#notion-template" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="notebook-pen" class="w-5 h-5"></i> Notion Template</a></li>
+                        <li><a href="#documenting" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="edit-3" class="w-5 h-5"></i> The Habit of Writing</a></li>
+                        <li><a href="#techniques" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="sliders-horizontal" class="w-5 h-5"></i> Powerful Techniques</a></li>
+                        <li><a href="#learn" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="graduation-cap" class="w-5 h-5"></i> Who to Follow</a></li>
+                        <li><a href="#tools" class="flex items-center gap-3 px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-primary dark:hover:text-white hover:bg-primary/10 dark:hover:bg-primary/20 rounded-lg transition-all duration-200"><i data-lucide="wrench" class="w-5 h-5"></i> Tools Directory</a></li>
+                    </ul>
+                </nav>
+            </div>
+            <div class="mt-auto">
+                 <button id="theme-toggle" type="button" class="text-gray-500 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-dark-700 focus:outline-none focus:ring-4 focus:ring-gray-200 dark:focus:ring-gray-700 rounded-lg text-sm p-2.5 w-full flex items-center justify-center gap-2 transition-colors duration-200">
+                     <i id="theme-toggle-dark-icon" class="hidden w-5 h-5 flex-shrink-0" data-lucide="moon"></i>
+                     <i id="theme-toggle-light-icon" class="hidden w-5 h-5 flex-shrink-0" data-lucide="sun"></i>
+                     <span>Toggle Theme</span>
+                 </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="flex-1 lg:ml-64 p-6 md:p-10 lg:p-12">
+            <div class="max-w-4xl mx-auto">
+                
+                <!-- Header Section -->
+                <header class="text-center mb-12">
+                    <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-3">Your Journey to <span class="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">Peak Productivity</span></h1>
+                    <p class="text-lg text-gray-500 dark:text-gray-400">Master your time, focus, and energy to build the life you envision.</p>
+                </header>
+
+                <!-- Main Video Section -->
+                <section class="mb-16">
+                    <div class="video-container">
+                        <iframe 
+                            src="https://www.youtube.com/embed/i02y_v8a5fA?si=sDqM-yR1mZ5xG6fB" 
+                            title="Productivity Masterclass"
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>
+                </section>
+                
+                <!-- Accordion Sections Container -->
+                <div class="space-y-4">
+                
+                    <!-- Section 1: Personal Audit -->
+                    <div id="audit" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">1. Personal Audit: Where is Your Time Really Going?</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content bg-white dark:bg-dark-900">
+                            <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <div class="mb-6">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/477828bf80752bbb7ca2e4934eab7094849a3891.jpeg" alt="Personal Audit Banner" class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md">
+                                </div>
+                                <div class="space-y-8 text-lg leading-relaxed">
+                                    <p class="italic text-primary dark:text-primary-light">"Time isn’t lost — it's invested. The real question is: What are you investing your life into?"</p>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Where or in what do you spend most of your time?</h3>
+                                        <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
+                                            <li>Do you check Instagram, TikTok, WhatsApp, or YouTube as soon as you wake up?</li>
+                                            <li>Do you struggle to complete a task without grabbing your phone?</li>
+                                            <li>Are you consuming content that <span class="text-green-500 dark:text-green-400 font-semibold">inspires and educates you</span>, or just entertains you?</li>
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Your Challenge: Perform a 10-Minute Digital Usage Audit</h3>
+                                        <p class="mb-4 text-gray-600 dark:text-gray-400">This short reflection could shift your entire trajectory. Use the Notion Template in Section 3 to track your screen time, productive vs. reactive time, and the types of content you consume.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 2: Make a Promise -->
+                    <div id="promise" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">2. Make a Promise to Your Future Self</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                           <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <div class="mb-6">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/8bf946bb28a23faff9b364b62121511b31505bb0.jpeg" alt="Promise Banner" class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md">
+                                </div>
+                                <div class="bg-white dark:bg-dark-800 p-8 rounded-xl border border-primary/20 dark:border-primary/30 shadow-lg text-center">
+                                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Turn Your Goals Into a Reality</h3>
+                                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-6">You've set your goals. Now, make them official. This digital self-contract is a powerful tool to declare a personal commitment to your productivity, your business, and most importantly... to yourself.</p>
+                                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">Ready to make it real? Click the button below to fill out and seal your personal commitment contract.</p>
+                                    <a href="https://bebell-digital-solutions.github.io/compromiso-usuario/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105">
+                                        <i data-lucide="file-signature"></i> Create My Self-Contract
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 3: Productivity Tools & Notion Template -->
+                    <div id="notion-template" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">3. Notion Template: Your Action Plan</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                            <div class="p-6 border-t border-gray-200 dark:border-gray-700 space-y-6">
+
+                                <!-- Video Banner with Play Button -->
+                                <div class="video-thumbnail" data-video-id="Xet3KkFDt8o">
+                                    <img src="https://img.youtube.com/vi/Xet3KkFDt8o/maxresdefault.jpg" alt="Notion Template Video">
+                                    <div class="video-play-button">
+                                        <i data-lucide="play" class="w-12 h-12 ml-1"></i>
+                                    </div>
+                                </div>
+
+                                <!-- Content Box -->
+                                <div class="bg-white dark:bg-dark-800 p-8 rounded-xl border border-primary/20 dark:border-primary/30 shadow-lg text-center">
+                                    <h3 class="text-2xl font-bold text-gray-800 dark:text-white mb-4">Get the All-in-One Productivity Template</h3>
+                                    <p class="text-lg text-gray-600 dark:text-gray-400 mb-8">
+                                        Bridge the gap between insight and action. This Notion template combines the Digital Audit and Productivity Contract into one easy-to-use page. Copy it to your workspace and start tracking your progress today.
+                                    </p>
+                                    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                                        <button id="open-modal-btn" class="w-full sm:w-auto inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-4 px-8 rounded-lg transition-transform duration-300 hover:scale-105">
+                                            <i data-lucide="copy"></i> View & Copy Template
+                                        </button>
+                                        <!-- FIX: Removed invalid 'rel' attribute from this link -->
+                                        <a href="https://bebelldigital.gumroad.com/" target="_blank" class="w-full sm:w-auto inline-flex items-center gap-2 bg-gray-800 hover:bg-black dark:bg-gray-200 dark:hover:bg-white text-white dark:text-black font-bold py-4 px-8 rounded-lg transition-colors duration-300">
+                                            <i data-lucide="external-link"></i> Premium Notion Templates
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 4: Power of Writing it Down -->
+                    <div id="documenting" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">4. The Habit of Writing Everything Down</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                           <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <div class="mb-6">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/da94806e6d870fc57c90c58b4887704a166c14cd.jpeg" alt="Writing Banner" class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md">
+                                </div>
+                                <div class="space-y-6 text-lg leading-relaxed">
+                                    <p class="italic text-primary dark:text-primary-light">"What is not on paper is not in this world." - A popular business mantra.</p>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">From Vague Idea to Concrete Plan</h3>
+                                        <p class="text-gray-600 dark:text-gray-400">The simple act of writing down your goals, thoughts, and tasks transforms them from abstract concepts into tangible objectives. It forces clarity and gives your brain a concrete plan to follow, rather than a cloud of competing thoughts.</p>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Free Up Your Mental RAM</h3>
+                                         <p class="text-gray-600 dark:text-gray-400">Your mind is for having ideas, not holding them. When you try to remember everything, you create mental clutter that drains your focus and energy. By offloading this information onto paper or a digital note, you free up cognitive resources for deep thinking, problem-solving, and creativity.</p>
+                                    </div>
+                                     <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-3">Reinforce Your Commitment</h3>
+                                         <p class="text-gray-600 dark:text-gray-400">Documenting your progress and tracking your habits creates a visual record of your efforts. This feedback loop is incredibly motivating and reinforces your commitment. Seeing how far you've come makes it easier to stay disciplined on the path ahead.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 5: Productivity Techniques -->
+                    <div id="techniques" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">5. Productivity Techniques</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                           <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <div class="mb-6">
+                                    <img src="https://bucket.mlcdn.com/a/3336/3336910/images/d6ca59754b9e86ffdfaaea6c423ac0047dc543fd.jpeg" alt="Techniques Banner" class="w-full h-auto aspect-[16/9] object-cover rounded-lg shadow-md">
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">1. Pomodoro Technique</h4><p class="text-gray-600 dark:text-gray-400">25 mins focused work + 5 min break. After 4 rounds, take a longer break.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">2. Time Blocking</h4><p class="text-gray-600 dark:text-gray-400">Schedule every hour of your day for specific tasks.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">3. Eisenhower Matrix</h4><p class="text-gray-600 dark:text-gray-400">Prioritize tasks based on urgency vs. importance.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">4. The 2-Minute Rule</h4><p class="text-gray-600 dark:text-gray-400">If a task takes less than 2 minutes, do it immediately.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">5. Eat That Frog</h4><p class="text-gray-600 dark:text-gray-400">Do the most difficult or important task first thing in the morning.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">6. Don't Break the Chain</h4><p class="text-gray-600 dark:text-gray-400">Mark a daily "X" every time you complete a habit. Build momentum.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">7. Theme Days</h4><p class="text-gray-600 dark:text-gray-400">Assign a theme to each day of the week (e.g., Monday = Content).</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">8. Rule of 3</h4><p class="text-gray-600 dark:text-gray-400">Each day, define your Top 3 priorities. Anything more is extra.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">9. Energy-Based Scheduling</h4><p class="text-gray-600 dark:text-gray-400">Work on creative tasks during your energy peak.</p></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50"><h4 class="font-bold text-primary text-lg">10. Batching Similar Tasks</h4><p class="text-gray-600 dark:text-gray-400">Group similar tasks together to minimize context-switching.</p></div>
+                                </div>
+
+                                <!-- Demo Video for Productivity Techniques -->
+                                <div class="mb-8">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Watch: How to Implement These Techniques</h3>
+                                    <div class="video-thumbnail" data-video-id="dQw4w9WgXcQ">
+                                        <img src="https://img.youtube.com/vi/dQw4w9WgXcQ/maxresdefault.jpg" alt="Productivity Techniques Demo">
+                                        <div class="video-play-button">
+                                            <i data-lucide="play" class="w-12 h-12 ml-1"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="bg-white dark:bg-dark-800 p-8 rounded-xl border-t-4 border-primary shadow-lg">
+                                    <h3 class="font-bold text-gray-800 dark:text-white text-2xl mb-3">11. Modular Thinking: Templates for Everything</h3>
+                                    <p class="italic text-primary dark:text-primary-light mb-4 text-lg">"If I do it more than once, I turn it into a template."</p>
+                                    <p class="text-gray-600 dark:text-gray-400 mb-6">Think of your business like a kitchen. Would you cook from scratch every time if you had 10 guests waiting? Or would you prep ingredients, batch sauces, label containers, and reuse tools — so everything is fast, consistent, and stress-free? That's exactly what modular thinking means in your business.</p>
+                        
+                                    <hr class="my-6 border-gray-200 dark:border-gray-600">
+                                    
+                                    <div class="space-y-8">
+                                        <div>
+                                            <h4 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">✅ What is it?</h4>
+                                            <p class="text-gray-600 dark:text-gray-400">Create templates, modules, or standardized systems for every repeated task. Instead of starting from zero each time, you work from a proven base.</p>
+                                        </div>
+                        
+                                        <hr class="my-6 border-gray-200 dark:border-gray-600">
+                        
+                                        <div>
+                                            <h4 class="text-xl font-semibold text-gray-800 dark:text-white mb-3">🧠 Real-life examples:</h4>
+                                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Emails</strong> &rarr; Use a welcome email template, a support reply template, a follow-up template.</li>
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Proposals</strong> &rarr; Create one master proposal with placeholders that you customize quickly.</li>
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Content</strong> &rarr; Reuse content outlines, captions, video scripts, or hook formulas.</li>
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Client Onboarding</strong> &rarr; Have a step-by-step checklist you can duplicate for each new client.</li>
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Social Media Posts</strong> &rarr; Save post structures (carousel templates, CTA structures, bio formats).</li>
+                                                <li><strong class="text-gray-700 dark:text-gray-300">Design</strong> &rarr; Work with Canva templates instead of starting each project from a blank canvas.</li>
+                                            </ul>
+                                        </div>
+                        
+                                        <hr class="my-6 border-gray-200 dark:border-gray-600">
+                        
+                                        <div>
+                                            <h4 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">🔁 Why it works:</h4>
+                                            <ul class="list-disc list-inside space-y-2 text-gray-600 dark:text-gray-400">
+                                                <li>Saves hours of <strong>decision-making</strong> and <strong>rework</strong>.</li>
+                                                <li>Allows your <strong>team to scale</strong> faster without bottlenecks.</li>
+                                                <li>Makes your business feel <strong>more professional and consistent</strong>.</li>
+                                                <li>Frees up your creative energy for the things that actually require innovation.</li>
+                                            </ul>
+                                        </div>
+                        
+                                        <hr class="my-6 border-gray-200 dark:border-gray-600">
+                        
+                                        <div>
+                                            <h4 class="text-xl font-semibold text-gray-800 dark:text-white mb-2">😫 Pain Point Example:</h4>
+                                             <div class="bg-gray-100 dark:bg-dark-700/50 p-4 rounded-lg italic">
+                                                 <p class="text-gray-600 dark:text-gray-400">Imagine trying to pack your suitcase every week for a work trip without a packing list. Every single time you forget socks, or overpack clothes you never wear. Now compare that to having a <strong>checklist template</strong> — pack once, no stress, always ready.</p>
+                                             </div>
+                                        </div>
+                                        
+                                    </div>
+                        
+                                    <hr class="my-8 border-gray-200 dark:border-gray-600">
+                        
+                                    <p class="text-center font-semibold text-lg text-primary dark:text-primary-light">🛠️ When you build with templates, you stop working harder and start working smarter.</p>
+                                </div>
+
+                           </div>
+                        </div>
+                    </div>
+                
+                    <!-- Section 6: Who to Follow & Learn From -->
+                    <div id="learn" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                         <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">6. Who to Follow & Learn From</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <p class="text-gray-600 dark:text-gray-400 mb-8 italic">You become the average of the content you consume and the people you learn from.</p>
+                                <div class="mb-12">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">🧠 Productivity & Habits</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/F35AB1/FFFFFF?text=Ali+Abdaal" onerror="this.src='https://placehold.co/400x250/F35AB1/FFFFFF?text=Ali+Abdaal'" alt="Ali Abdaal" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Ali Abdaal</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Productivity, note-taking, building leverage as a creator.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.youtube.com/user/aliabdaal" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="YouTube"><i data-lucide="youtube"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/A60F61/FFFFFF?text=James+Clear" onerror="this.src='https://placehold.co/400x250/A60F61/FFFFFF?text=James+Clear'" alt="James Clear" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">James Clear</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Author of *Atomic Habits*. Master of habit formation.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://twitter.com/JamesClear" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="Twitter/X"><i data-lucide="twitter"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/DF1783/FFFFFF?text=Thomas+Frank" onerror="this.src='https://placehold.co/400x250/DF1783/FFFFFF?text=Thomas+Frank'" alt="Thomas Frank" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Thomas Frank</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Study strategies, productivity systems, and Notion expertise.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.youtube.com/user/electrickeye91" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="YouTube"><i data-lucide="youtube"></i></a></div></div>
+                                    </div>
+                                </div>
+                                <div class="mb-12">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">🚀 Business & Skills Growth</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/F35AB1/FFFFFF?text=Justin+Welsh" onerror="this.src='https://placehold.co/400x250/F35AB1/FFFFFF?text=Justin+Welsh'" alt="Justin Welsh" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Justin Welsh</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Building solo businesses with systems and writing.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.linkedin.com/in/justinwelsh/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="LinkedIn"><i data-lucide="linkedin"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/A60F61/FFFFFF?text=Sahil+Bloom" onerror="this.src='https://placehold.co/400x250/A60F61/FFFFFF?text=Sahil+Bloom'" alt="Sahil Bloom" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Sahil Bloom</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Business frameworks, mental models, personal growth.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://twitter.com/SahilBloom" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="Twitter/X"><i data-lucide="twitter"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/DF1783/FFFFFF?text=Vanessa+Lau" onerror="this.src='https://placehold.co/400x250/DF1783/FFFFFF?text=Vanessa+Lau'" alt="Vanessa Lau" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Vanessa Lau</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Brand strategy, content for coaches & online experts.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto flex items-center gap-4"><a href="https://www.instagram.com/vanessalau.co/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="Instagram"><i data-lucide="instagram"></i></a><a href="https://www.youtube.com/c/VanessaLau" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="YouTube"><i data-lucide="youtube"></i></a></div></div>
+                                    </div>
+                                </div>
+                                <div class="mb-12">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-6">🎨 Content Creation & Storytelling</h3>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/F35AB1/FFFFFF?text=Nathaniel+Drew" onerror="this.src='https://placehold.co/400x250/F35AB1/FFFFFF?text=Nathaniel+Drew'" alt="Nathaniel Drew" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Nathaniel Drew</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Clarity, storytelling, and documenting personal growth.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.youtube.com/c/NathanielDrew" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="YouTube"><i data-lucide="youtube"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/A60F61/FFFFFF?text=Roberto+Blake" onerror="this.src='https://placehold.co/400x250/A60F61/FFFFFF?text=Roberto+Blake'" alt="Roberto Blake" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Roberto Blake</h4><p class="text-gray-600 dark:text-gray-400 text-sm">YouTube growth, creative entrepreneurship, consistency tips.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.youtube.com/c/RobertoBlake" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="YouTube"><i data-lucide="youtube"></i></a></div></div>
+                                        <div class="bg-white dark:bg-dark-800 rounded-lg overflow-hidden group transform hover:-translate-y-2 transition-all duration-300 shadow-lg hover:shadow-2xl hover:shadow-primary/20 border border-gray-200 dark:border-gray-700/50 flex flex-col"><img src="https://placehold.co/400x250/DF1783/FFFFFF?text=Jodi+Arrajo" onerror="this.src='https://placehold.co/400x250/DF1783/FFFFFF?text=Jodi+Arrajo'" alt="Jodi Arrajo" class="w-full h-40 object-cover"><div class="p-5 flex-grow"><h4 class="font-bold text-gray-900 dark:text-white text-xl mb-1">Jodi Arrajo</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Short-form video and content hooks.</p></div><div class="p-5 pt-0 border-t border-gray-100 dark:border-gray-700/50 mt-auto"><a href="https://www.instagram.com/jodiarrajo/" target="_blank" rel="noopener noreferrer" class="text-gray-500 hover:text-primary transition-colors text-2xl" title="Instagram"><i data-lucide="instagram"></i></a></div></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Demo Video for Learning Resources -->
+                                <div class="mb-8">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Watch: How to Learn Effectively from Experts</h3>
+                                    <div class="video-thumbnail" data-video-id="9OpRdsF3FkI">
+                                        <img src="https://img.youtube.com/vi/9OpRdsF3FkI/maxresdefault.jpg" alt="Learning from Experts">
+                                        <div class="video-play-button">
+                                            <i data-lucide="play" class="w-12 h-12 ml-1"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Section 7: Tools Directory -->
+                    <div id="tools" class="accordion-section scroll-mt-24 rounded-xl overflow-hidden border border-gray-200 dark:border-gray-700">
+                        <button type="button" class="accordion-toggle flex items-center justify-between w-full p-5 font-bold text-left bg-gray-100 dark:bg-dark-800 hover:bg-gray-200 dark:hover:bg-dark-700 transition-colors duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary">
+                            <span class="text-xl text-gray-900 dark:text-white">7. Tools Directory</span>
+                            <i data-lucide="chevron-down" class="shrink-0 transition-transform duration-300 text-gray-500 dark:text-gray-400"></i>
+                        </button>
+                        <div class="accordion-content hidden bg-white dark:bg-dark-900">
+                             <div class="p-6 border-t border-gray-200 dark:border-gray-700">
+                                <p class="text-gray-600 dark:text-gray-400 mb-8 italic">The right tools can amplify your focus and automate your workflow.</p>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="notebook-text"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Notion</h4><p class="text-gray-600 dark:text-gray-400 text-sm">The all-in-one workspace for notes, tasks, wikis, and databases.</p></div></div><a href="https://notion.so" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="tree-pine"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Forest</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Gamify your focus sessions by planting trees to stay off your phone.</p></div></div><a href="https://www.forestapp.cc/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="zap"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Zapier</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Automate your work by connecting your apps and services.</p></div></div><a href="https://zapier.com/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="timer"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Toggl Track</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Simple time tracking to understand where your minutes go.</p></div></div><a href="https://toggl.com/track/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="clock"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Clockify</h4><p class="text-gray-600 dark:text-gray-400 text-sm">The most popular free time tracker for teams and individuals.</p></div></div><a href="https://clockify.me/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="check-square"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Todoist</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Organize your work and life, finally. A powerful task manager.</p></div></div><a href="https://todoist.com/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="trello"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">TTrello</h4><p class="text-gray-600 dark:text-gray-400 text-sm">A visual collaboration tool that creates a shared perspective on any project.</p></div></div><a href="https://trello.com/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                    <div class="bg-white dark:bg-dark-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700/50 flex items-center justify-between gap-4 transform hover:-translate-y-1 transition-transform duration-300"><div class="flex items-start gap-5"><div class="text-primary text-2xl pt-1"><i data-lucide="shield-off"></i></div><div><h4 class="font-bold text-gray-900 dark:text-white text-lg">Freedom</h4><p class="text-gray-600 dark:text-gray-400 text-sm">Block distracting websites, apps, and the whole internet if you need to.</p></div></div><a href="https://freedom.to/" target="_blank" rel="noopener noreferrer" class="bg-primary/10 hover:bg-primary/20 dark:bg-primary/20 dark:hover:bg-primary/30 text-primary font-semibold py-2 px-4 rounded-lg transition-colors whitespace-nowrap">Visit Site</a></div>
+                                </div>
+                                
+                                <!-- Demo Video for Tools -->
+                                <div class="mt-8">
+                                    <h3 class="text-2xl font-semibold text-gray-800 dark:text-white mb-4">Watch: How to Choose the Right Productivity Tools</h3>
+                                    <div class="video-thumbnail" data-video-id="L_jWHffIx5E">
+                                        <img src="https://img.youtube.com/vi/L_jWHffIx5E/maxresdefault.jpg" alt="Productivity Tools Guide">
+                                        <div class="video-play-button">
+                                            <i data-lucide="play" class="w-12 h-12 ml-1"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <footer class="mt-16 text-center text-sm text-gray-900 dark:text-gray-400">
+                    <div class="social-links">
+                        <a href="https://bebell-digital-solutions.github.io/checklist-creator" class="social-link" rel="noopener">
+                            <span>☑️</span> Checklist Creator
+                        </a>
+                        <a href="https://bebell-digital-solutions.github.io/tasks-manager/en-v03" class="social-link" rel="noopener">
+                            <span>🎯</span> Tasks Manager
+                        </a>
+                        <a href="https://bebell-digital-solutions.github.io/bookmark-page/en-v03" class="social-link" rel="noopener">
+                            <span>🔗</span> Links Manager
+                        </a>
+                        <a href="https://bebell-digital-solutions.github.io/magic-toolbox-database/en-v03" class="social-link" rel="noopener">
+                            <span>🧰</span> Magic Toolbox
+                        </a>
+                        <a href="mailto:soporte@bebelldigitalsolutions.com" class="social-link"  rel="noopener">
+                            <span>📨</span> Tech Support
+                        </a>
+                    </div>
+                </footer>
+                        
+                <div class="bebell-footer mt-2 p-4 rounded-lg max-w-md mx-auto">
+                    <p class="m-0">
+                        Developed with <span class="heart">💖</span> by 
+                        <a href="https://bebelldigitalsolutions.com" class="bebell-link font-medium text-gray-700 dark:text-gray-300" target="_blank" rel="noopener">
+                            Bebell Digital Solutions
+                        </a>.
+                        <br>
+                        Copyright © 2024 • All rights reserved.
+                    </p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Video Modal -->
+    <div id="video-modal" class="video-modal hidden">
+        <div class="video-modal-content">
+            <button id="close-video-modal" class="video-modal-close">
+                <i data-lucide="x"></i>
+            </button>
+            <div class="video-container">
+                <iframe id="video-iframe" src="" title="Video Player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notion Template Modal -->
+    <div id="notion-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
+        <div class="bg-white dark:bg-dark-800 w-full max-w-3xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col">
+            <header class="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Productivity Audit + Personal Commitment</h3>
+                <button id="close-modal-btn" type="button" class="text-gray-400 hover:bg-gray-200 dark:hover:bg-dark-700 hover:text-gray-900 dark:hover:text-white rounded-lg text-sm w-8 h-8 flex items-center justify-center">
+                    <i data-lucide="x"></i>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </header>
+            <div id="template-content-wrapper" class="p-6 overflow-y-auto space-y-6 text-gray-700 dark:text-gray-300">
+                <!-- 
+                  A <pre> tag is used here to preserve the formatting of the template.
+                  The content inside is the text that will be copied.
+                -->
+                <pre class="whitespace-pre-wrap font-sans">
+# 🌟 My Productivity Audit + Personal Commitment  
+
+---  
+
+## 🔍 **SECTION 1: DIGITAL AUDIT** ### **📱 Phone Usage (Daily Time)** - [ ] <1h  
+- [ ] 1-2h  
+- [ ] 2-4h  
+- [ ] 4-6h  
+- [ ] 6h+  
+
+### **📊 Top Apps Used (Trackable in Notion Database)** | App        | Daily Time | Productive? (✅/❌) | Content Type | Productive Alternative |  
+|------------|------------|------------------|--------------|-----------------------|  
+| Instagram  |            |                  | Entertainment| Readwise / Feedly     |  
+| TikTok     |            |                  | Passive      | Audible / Coursera   |  
+| WhatsApp   |            |                  | Communication| Slack (Focus Mode)    |  
+| Others     |            |                  |              |                       |  
+
+### **📌 Content Type Consumed** - [ ] Active Learning (Courses, Books)  
+- [ ] News / Current Events  
+- [s] Passive Entertainment (Mindless Scrolling)  
+- [ ] Networking / Professional  
+- [ ] Inspiration (Motivation, Self-Growth)  
+
+---  
+
+## 🕒 **SECTION 2: TIME DISTRIBUTION (Weekly)** | Activity     | Hours/Day | Aligned with Goals? (✅/❌) | Priority (⭐️⭐️⭐️) |  
+|--------------|----------|----------------------|----------------|  
+| Work         |          |                      |                |  
+| Study        |          |                      |                |  
+| Exercise     |          |                      |                |  
+| Social Media |          |                      |                |  
+| Sleep        |          |                      |                |  
+| Family/Friends|          |                      |                |  
+
+---  
+
+## 🎯 **SECTION 3: GOALS & KEY HABITS** ### **Weekly Goals** 1. **Main Goal:** _________ (e.g., Reduce social media to 1h/day)  
+2. **Key Habit:** _________ (e.g., Read 30 min/day)  
+3. **Eliminate:** _________ (e.g., TikTok after 8 PM)  
+
+### **Reward System** - If I succeed 5/7 days → ________ (e.g., Fancy coffee)  
+- If I fail → ________ (e.g., Donate $10 to charity)  
+
+---  
+
+## ✍️ **SECTION 4: PRODUCTIVITY CONTRACT** **I, [Name], commit to:** - [ ] Reviewing my audit every **Sunday**.  
+- [ ] Deleting **1 distracting app** this week.  
+- [ ] Blocking social media after **9 PM**.  
+- [ ] Using **focus mode** on my phone.  
+
+**Start Date:** ___  
+**Review Date:** ___  
+**Signature:** ___________________  
+
+✅ **Auto-reminder in Notion (7 days)** ---  
+
+## 🔁 **SECTION 5: WEEKLY REVIEW** ### **Key Questions:** 1. Did I meet my goals? (Yes / Partially / No)  
+2. What **distraction** wasted the most time?  
+3. What **new habit** did I implement?  
+4. How can I **improve** next week?  
+
+### **Results:** - **Time Reclaimed:** ___ hours  
+- **Productivity Increase:** ___% (Estimate)  
+
+📓 **Personal Notes:** ---  
+
+## 🚀 **BONUS: PREMIUM NOTION TEMPLATE (Instructions)** ### **Extra Features:** ✔ **Built-in database** for app/time tracking.  
+✔ **Weekly progress system** with charts.  
+✔ **Distraction-blocking template** (using [Freedom](https://freedom.to/) or [Cold Turkey](https://getcoldturkey.com/)).  
+✔ **Auto-reminders** (via Notion).  
+
+### **How to Use:** 1. **Duplicate the template** in Notion.  
+2. **Set up reminders** (in date properties).  
+3. **Update daily** the app tracker.  
+4. **Review every Sunday** and adjust goals.  
+
+---  
+
+### **Download the Template:** 🔗 [Link to Premium Notion Template]  
+
+---  
+
+### **What's Missing in Your Original Version?** ✅ **Weekly tracking** (not just daily).  
+✅ **Productive alternatives** to time-wasting apps.  
+✅ **Rewards/consequences** for accountability.  
+✅ **Tool integrations** (Freedom, RescueTime).  
+✅ **Progress charts** in Notion.  
+                </pre>
+            </div>
+            <footer class="flex items-center justify-end p-4 border-t border-gray-200 dark:border-gray-700 flex-shrink-0">
+                <button id="copy-template-btn" class="inline-flex items-center gap-2 bg-primary hover:bg-primary-dark text-white font-bold py-2 px-5 rounded-lg transition-all duration-300 hover:scale-105">
+                    <i data-lucide="clipboard-copy" class="w-4 h-4"></i>
+                    <span id="copy-btn-text">Copy Template</span>
+                </button>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Back to Top Widget -->
+    <div id="back-to-top" style="position: fixed; bottom: 30px; right: 30px; display: none; cursor: pointer; z-index: 9999;">
+        <img src="https://bucket.mlcdn.com/a/3336/3336910/images/29840e122b950f88fdca23072015101b427a9112.png" alt="Volver arriba" style="width: 40px; height: 40px;">
+    </div>
+
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // --- THEME TOGGLE LOGIC ---
+            const themeToggleBtn = document.getElementById('theme-toggle');
+            const themeToggleDarkIcon = document.getElementById('theme-toggle-dark-icon');
+            const themeToggleLightIcon = document.getElementById('theme-toggle-light-icon');
+
+            function updateThemeUI(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    if(themeToggleLightIcon) themeToggleLightIcon.classList.remove('hidden');
+                    if(themeToggleDarkIcon) themeToggleDarkIcon.classList.add('hidden');
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    if(themeToggleLightIcon) themeToggleLightIcon.classList.add('hidden');
+                    if(themeToggleDarkIcon) themeToggleDarkIcon.classList.remove('hidden');
+                }
+            }
+            
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const savedTheme = localStorage.getItem('theme');
+            const initialIsDark = savedTheme ? savedTheme === 'dark' : prefersDark;
+            updateThemeUI(initialIsDark);
+
+            if(themeToggleBtn) {
+                themeToggleBtn.addEventListener('click', () => {
+                    const isCurrentlyDark = document.documentElement.classList.contains('dark');
+                    const newIsDark = !isCurrentlyDark;
+                    localStorage.setItem('theme', newIsDark ? 'dark' : 'light');
+                    updateThemeUI(newIsDark);
+                });
+            }
+            
+            // --- ACCORDION LOGIC ---
+            const accordions = document.querySelectorAll('.accordion-toggle');
+
+            accordions.forEach(accordion => {
+                const content = accordion.nextElementSibling;
+                const icon = accordion.querySelector('[data-lucide="chevron-down"]');
+
+                // Keep the first section open by default
+                if (accordion.closest('.accordion-section').id === 'audit') {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+
+                accordion.addEventListener('click', () => {
+                    content.classList.toggle('hidden');
+                    icon.classList.toggle('rotate-180');
+                });
+            });
+            
+            // --- VIDEO MODAL LOGIC ---
+            const videoModal = document.getElementById('video-modal');
+            const videoIframe = document.getElementById('video-iframe');
+            const closeVideoModalBtn = document.getElementById('close-video-modal');
+            const videoThumbnails = document.querySelectorAll('.video-thumbnail');
+
+            // Function to open video modal
+            function openVideoModal(videoId) {
+                if (videoIframe && videoModal) {
+                    videoIframe.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+                    videoModal.classList.remove('hidden');
+                    videoModal.classList.add('flex'); // Use flex for centering
+                }
+            }
+
+            // Function to close video modal
+            function closeVideoModal() {
+                if (videoIframe && videoModal) {
+                    videoIframe.src = '';
+                    videoModal.classList.add('hidden');
+                    videoModal.classList.remove('flex');
+                }
+            }
+
+            // Add click event to all video thumbnails
+            videoThumbnails.forEach(thumbnail => {
+                thumbnail.addEventListener('click', () => {
+                    const videoId = thumbnail.getAttribute('data-video-id');
+                    if (videoId) {
+                        openVideoModal(videoId);
+                    }
+                });
+            });
+
+            // Close modal when close button is clicked
+            if (closeVideoModalBtn) {
+                closeVideoModalBtn.addEventListener('click', closeVideoModal);
+            }
+
+            // Close modal when clicking outside the video content
+            if (videoModal) {
+                videoModal.addEventListener('click', (e) => {
+                    if (e.target === videoModal) {
+                        closeVideoModal();
+                    }
+                });
+            }
+
+            // --- NOTION TEMPLATE MODAL LOGIC ---
+            const modal = document.getElementById('notion-modal');
+            const openModalBtn = document.getElementById('open-modal-btn');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const copyTemplateBtn = document.getElementById('copy-template-btn');
+            const templateContentWrapper = document.getElementById('template-content-wrapper');
+            const copyBtnText = document.getElementById('copy-btn-text');
+
+            if (openModalBtn && modal) {
+                openModalBtn.addEventListener('click', () => {
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                });
+            }
+
+            function closeNotionModal() {
+                 if (modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                 }
+            }
+
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', closeNotionModal);
+            }
+
+            // Close modal if clicking on the background overlay
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        closeNotionModal();
+                    }
+                });
+            }
+
+            // --- CLIPBOARD COPY LOGIC (RELIABLE METHOD) ---
+            if (copyTemplateBtn && templateContentWrapper) {
+                copyTemplateBtn.addEventListener('click', () => {
+                    const textToCopy = templateContentWrapper.innerText;
+                    
+                    // Create a temporary textarea element to hold the text
+                    const textArea = document.createElement('textarea');
+                    textArea.value = textToCopy;
+                    
+                    // Style it to be hidden
+                    textArea.style.position = 'fixed';
+                    textArea.style.top = '0';
+                    textArea.style.left = '0';
+                    textArea.style.width = '2em';
+                    textArea.style.height = '2em';
+                    textArea.style.padding = '0';
+                    textArea.style.border = 'none';
+                    textArea.style.outline = 'none';
+                    textArea.style.boxShadow = 'none';
+                    textArea.style.background = 'transparent';
+                    
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    
+                    let success = false;
+                    try {
+                        // Use the deprecated but reliable execCommand for iFrame contexts
+                        success = document.execCommand('copy');
+                    } catch (err) {
+                        console.error('Failed to copy text: ', err);
+                    }
+                    
+                    document.body.removeChild(textArea);
+
+                    if (success && copyBtnText) {
+                        copyBtnText.textContent = 'Copied!';
+                        setTimeout(() => {
+                            copyBtnText.textContent = 'Copy Template';
+                        }, 2000);
+                    } else {
+                         console.error('Copy command was not successful');
+                         // You could show an error message to the user here
+                    }
+                });
+            }
+
+            // --- SCROLLSPY FOR SIDEBAR NAVIGATION ---
+            const sections = document.querySelectorAll('.accordion-section');
+            const navLinks = document.querySelectorAll('aside nav a');
+
+            function setActiveLink(id) {
+                navLinks.forEach(link => {
+                    const linkHref = link.getAttribute('href');
+                    link.classList.remove('bg-primary/10', 'dark:bg-primary/20', 'text-primary', 'dark:text-white');
+                    link.classList.add('text-gray-600', 'dark:text-gray-400');
+                    if (linkHref === '#' + id) {
+                        link.classList.add('bg-primary/10', 'dark:bg-primary/20', 'text-primary', 'dark:text-white');
+                        link.classList.remove('text-gray-600', 'dark:text-gray-400');
+                    }
+                });
+            }
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '-25% 0px -75% 0px', // Activate when the section top is 25% from the viewport top
+                threshold: 0
+            };
+
+            const observer = new IntersectionObserver(entries => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        setActiveLink(entry.target.id);
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+            
+            // --- ENHANCED SIDEBAR NAVIGATION CLICK ---
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    // Smooth scroll is handled by CSS (html.scroll-smooth)
+                    
+                    const targetId = link.getAttribute('href').substring(1);
+                    const targetSection = document.getElementById(targetId);
+
+                    if (targetSection) {
+                        const content = targetSection.querySelector('.accordion-content');
+                        const icon = targetSection.querySelector('.accordion-toggle [data-lucide="chevron-down"]');
+                        
+                        // If the content is hidden, open it
+                        if (content && content.classList.contains('hidden')) {
+                            content.classList.remove('hidden');
+                            if (icon) {
+                                icon.classList.add('rotate-180');
+                            }
+                        }
+                    }
+                });
+            });
+            
+            // --- BACK TO TOP BUTTON ---
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            if (backToTopBtn) {
+                window.addEventListener('scroll', function() {
+                    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                        backToTopBtn.style.display = 'block';
+                    } else {
+                        backToTopBtn.style.display = 'none';
+                    }
+                });
+
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+            
+            // Initialise Lucide icons
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>
